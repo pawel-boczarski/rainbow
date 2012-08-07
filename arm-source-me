@@ -1,0 +1,5 @@
+PATH=$PATH:$HOME/bin/codesourcery-armgcc-2009q1/bin/:$HOME/bin
+export PATH
+export ARCH=arm
+export CROSS_COMPILE=arm-none-linux-gnueabi-
+export KERNELDIR=/home/pawel/workspace-olimex/linux-2.6
