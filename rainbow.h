@@ -89,6 +89,9 @@ rainbow_configdef configdef(int R, int G, int B);
 void add_configdef(char *name, rainbow_configdef cdef);
 rainbow_configdef find_configdef(char *name);
 
+// device internal state management
+void apply_configdef(struct rainbow_dev *dev, char *name);
+
 // low level drv ops
 int drv_hw_open();
 void drv_setDiodeState(rainbow_diodestate state);

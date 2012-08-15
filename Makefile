@@ -1,5 +1,5 @@
 ifneq ($(KERNELRELEASE),)
-	rainbow-objs := main.o fops.o drv_$(LOW_LEVEL_DRV).o configdef.o
+	rainbow-objs := main.o fops.o drv_$(LOW_LEVEL_DRV).o configdef.o state.o
 	obj-m := rainbow.o
 else
 

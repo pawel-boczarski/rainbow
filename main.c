@@ -39,7 +39,7 @@ static int __init _initialize(void) {
 	dev->nrdefs_max = RAINBOW_CONFIGS_NUM;
 	dev->lastWrittenCommand = kmalloc(RAINBOW_DATABUFFER_LENGTH, GFP_KERNEL);
 
-	dev->rainbow_configs = kmalloc(sizeof(rainbow_configdef) * dev->nrdefs_max, GFP_KERNEL);
+	dev->rainbow_configs = kmalloc(sizeof(rainbow_config) * dev->nrdefs_max, GFP_KERNEL);
 
 	sema_init(&(dev->sem), 1);
 
@@ -66,13 +66,16 @@ static int __init _initialize(void) {
 	{
 		rainbow_configdef c;
 
-	//	printk(KERN_ALERT "adding configdefs...");
 		TRACE((TRACE_LEVEL "adding configdefs..."));
 
 		add_configdef("muteall", configdef(putdown, putdown, putdown));
 		add_configdef("red", configdef(lightup, putdown, putdown));
 		add_configdef("green", configdef(putdown, lightup, putdown));
 		add_configdef("blue", configdef(putdown, putdown, lightup));
+		add_configdef("cyan", configdef(putdown, lightup, lightup));
+		add_configdef("magenta", configdef(lightup, putdown, lightup));
+		add_configdef("yellow", configdef(lightup, lightup, putdown));
+		add_configdef("all", configdef(lightup, lightup, lightup));
 	}
 	
 	drv_hw_open();

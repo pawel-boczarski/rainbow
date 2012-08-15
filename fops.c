@@ -12,7 +12,6 @@ ssize_t rainbow_write(struct file *filp, const char __user *data, size_t datalen
 //	printk(KERN_INFO "Write fop requested, filp=%p, data=%p, datalen=%d, *pos=%d", filp, data, datalen, *pos);
 	TRACE((TRACE_LEVEL "Write fop requested, filp=%p, data=%p, datalen=%d, *pos=%d", filp, data, datalen, *pos));
 
-	rainbow_diodestate statenew;
 	int written = 0;
 	int maxPossibleToWrite = 63 - *pos;
 	int toWrite = min(datalen, maxPossibleToWrite);
@@ -36,47 +35,10 @@ ssize_t rainbow_write(struct file *filp, const char __user *data, size_t datalen
 		}
 		written = toWrite;
 		dev->lastWrittenCommand[*pos+toWrite] = '\0';
-
 	}
 
-	{
-		rainbow_configdef c = find_configdef(dev->lastWrittenCommand);
-		statenew = dev->currentState;
-
-		switch(c.R) {
-		case lightup:
-			statenew.R = 1; break;
-		case putdown:
-			statenew.R = 0; break;
-		case toggle:
-			statenew.R = (c.R == 0 ? 1 :  0); break;
-		case leave: break;
-		}
-
-		switch(c.G) {
-		case lightup:
-			statenew.G = 1; break;
-		case putdown:
-			statenew.G = 0; break;
-		case toggle:
-			statenew.G = (c.G == 0 ? 1 :  0); break;
-		case leave: break;
-		}
-
-		switch(c.B) {
-		case lightup:
-			statenew.B = 1; break;
-		case putdown:
-			statenew.B = 0; break;
-		case toggle:
-			statenew.B = (c.B == 0 ? 1 :  0); break;
-		case leave: break;
-		}
-
-		drv_setDiodeState(statenew);
-		dev->currentState = statenew;
-	}
-
+	// apply configdef by name
+	apply_configdef(dev, dev->lastWrittenCommand);
 
 	*pos += written;
 	up(&(dev->sem));
